@@ -1,5 +1,6 @@
-import {StrategyStyle} from "./type"
-import {camelToSnake} from "../utils"
+import {StrategyStyle} from "./index"
+import {camelToSnake, getSvgCoordinates} from "../../utils"
+import { Point } from "../drawBoard";
 
 //策略的基类
 export abstract class StrategyBase <T extends SVGElement>{
@@ -36,15 +37,34 @@ export abstract class StrategyBase <T extends SVGElement>{
      * （2）过程 --- 鼠标移动
      * （3）结束 --- 鼠标松开
      */
-    onStart(_point: PointerEvent): T | undefined {
+    onStart(_point: Point): T | undefined {
         return undefined;
     }
 
-    onProcess(_point: PointerEvent): boolean | undefined{
+    onProcess(_point: Point): boolean | undefined{
         return undefined
     }
 
-    onEnd(_point: PointerEvent): boolean | undefined {
+    onEnd(_point: Point): boolean | undefined {
         return undefined;
     };
+
+    /**
+     * 下面的方法是对上面的三个函数的封装，将三个函数的公共方法提取出来
+     * 比如说：鼠标相对坐标的获取
+     */
+    _eventStart(event: PointerEvent, svg: SVGSVGElement) {
+        let point = getSvgCoordinates(event, svg);
+        return this.onStart(point);
+    }
+
+    _eventProcess(event: PointerEvent, svg: SVGSVGElement) {
+        let point = getSvgCoordinates(event, svg);
+        return this.onProcess(point);
+    }
+
+    _eventEnd(event: PointerEvent, svg: SVGSVGElement) {
+        let point = getSvgCoordinates(event, svg);
+        return this.onEnd(point);
+    }
 }

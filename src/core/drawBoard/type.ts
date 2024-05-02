@@ -31,3 +31,13 @@ export interface Options {
     height?: number; 
 }
 
+/**
+ * @description 相对画板的坐标点
+ */
+export interface Point {
+    x : number;
+    y : number;
+}
+
+
+

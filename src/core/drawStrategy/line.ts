@@ -1,5 +1,6 @@
 import {StrategyBase} from "./strategyBase"
 import {StrategyStyle} from "./type"
+import { Point } from "../drawBoard";
 
 export class LineStrategy extends StrategyBase<SVGLineElement> {
     /**
@@ -8,29 +9,29 @@ export class LineStrategy extends StrategyBase<SVGLineElement> {
      * 所以把root svg传进来，或者将结果返回都是可以的
      * 但是更好的还是返回，这个类就可以更纯粹的做画，样式这两件事
      */
-    override onStart(point: PointerEvent) {
+    override onStart(point: Point) {
         this.el = this.createElement('line');
-        this.el.setAttribute('x1', point.clientX.toString());
-        this.el.setAttribute('y1', point.clientY.toString());
+        this.el.setAttribute('x1', point.x.toString());
+        this.el.setAttribute('y1', point.y.toString());
         
         //取消x2, y2的默认值
-        this.el.setAttribute('x2', point.clientX.toString());
-        this.el.setAttribute('y2', point.clientY.toString());
+        this.el.setAttribute('x2', point.x.toString());
+        this.el.setAttribute('y2', point.y.toString());
         return this.el;
     }
 
-    override onProcess(point: PointerEvent) {
+    override onProcess(point: Point) {
         if (this.el == null) return false;
-        this.el!.setAttribute('x2', point.clientX.toString());
-        this.el!.setAttribute('y2', point.clientY.toString());
+        this.el!.setAttribute('x2', point.x.toString());
+        this.el!.setAttribute('y2', point.y.toString());
         return true;
         
     }
 
-    override onEnd(point: PointerEvent) {
+    override onEnd(point: Point) {
         if (this.el == null) return false;
-        this.el!.setAttribute('x2', point.clientX.toString());
-        this.el!.setAttribute('y2', point.clientY.toString());
+        this.el!.setAttribute('x2', point.x.toString());
+        this.el!.setAttribute('y2', point.y.toString());
         this.el = null;
         return true;
     }

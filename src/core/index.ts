@@ -1,1 +1,2 @@
-export {createDrawBoard} from "./drawBorad"
+export * from "./drawBoard/type"
+export {createDrawBoard} from "./drawBoard"

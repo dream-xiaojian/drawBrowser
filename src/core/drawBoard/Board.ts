@@ -15,7 +15,7 @@ export class Board {
     }
 
     get strategy() { //自动根据策略标签获取对应的策略
-        return this.drawStrategies[this.options.strategyTag || 'line'];
+        return this.drawStrategies[this.options.strategyTag || 'ellipse'];
     }
 
 
@@ -54,19 +54,18 @@ export class Board {
     }
 
     onStart(event: PointerEvent) {
-        const currentDom = this.strategy.onStart(event)
-        
+        const currentDom = this.strategy._eventStart(event, this.el!) //抽离
         if (currentDom) {
             this.el!.appendChild(currentDom)
         }
     }
 
     onProcess(event: PointerEvent) {
-        this.strategy.onProcess(event)
+        this.strategy._eventProcess(event, this.el!)
     }
 
     onEnd(event: PointerEvent) {
-        this.strategy.onEnd(event)
+        this.strategy._eventEnd(event, this.el!)
     }
 }
 
