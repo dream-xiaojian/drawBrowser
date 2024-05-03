@@ -3,12 +3,7 @@ import {StrategyStyle} from "./type"
 import { Point } from "../drawBoard";
 
 export class LineStrategy extends StrategyBase<SVGLineElement> {
-    /**
-     * 因为每次画都只是一个策略
-     * 所以在一次画的过程，起点，过程，终点都调用的是一个策略
-     * 所以把root svg传进来，或者将结果返回都是可以的
-     * 但是更好的还是返回，这个类就可以更纯粹的做画，样式这两件事
-     */
+
     override onStart(point: Point) {
         this.el = this.createElement('line');
         this.el.setAttribute('x1', point.x.toString());
@@ -22,6 +17,19 @@ export class LineStrategy extends StrategyBase<SVGLineElement> {
 
     override onProcess(point: Point) {
         if (this.el == null) return false;
+
+        if (this.isKeyPass('Shift')) {
+            const x = point.x - parseInt(this.el.getAttribute('x1')!);
+            const y = point.y - parseInt(this.el.getAttribute('y1')!);
+            let angle = Math.atan2(y, x) * 180 / Math.PI;
+        
+            angle = Math.round(angle / 45) * 45;
+
+            const distance = Math.sqrt(x * x + y * y);
+            point.x = parseInt(this.el.getAttribute('x1')!) + distance * Math.cos(angle * Math.PI / 180);
+            point.y = parseInt(this.el.getAttribute('y1')!) + distance * Math.sin(angle * Math.PI / 180);
+        }
+
         this.el!.setAttribute('x2', point.x.toString());
         this.el!.setAttribute('y2', point.y.toString());
         return true;
@@ -29,15 +37,12 @@ export class LineStrategy extends StrategyBase<SVGLineElement> {
     }
 
     override onEnd(point: Point) {
-        if (this.el == null) return false;
-        this.el!.setAttribute('x2', point.x.toString());
-        this.el!.setAttribute('y2', point.y.toString());
         this.el = null;
         return true;
     }
 }
 
 //下面这个函数就是一个line工厂函数，用来创建line策略
-export function createLineStrategy(strategyStyle: StrategyStyle): LineStrategy{
-    return new LineStrategy(strategyStyle);
+export function createLineStrategy(strategyStyle: StrategyStyle, keys: Record<string, boolean>): LineStrategy{
+    return new LineStrategy(strategyStyle, keys);
 }

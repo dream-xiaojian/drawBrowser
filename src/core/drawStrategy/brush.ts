@@ -5,7 +5,6 @@ import { Point } from "../drawBoard";
 export class BrushStrategy extends StrategyBase<SVGPathElement> {
     points: Point[] = []; 
 
-    
     override onStart(point: Point) {
         this.el = this.createElement('path');
         // reset points
@@ -48,6 +47,6 @@ export class BrushStrategy extends StrategyBase<SVGPathElement> {
 
 }
 
-export function createBrushStrategy(strategyStyle: StrategyStyle): BrushStrategy{
-    return new BrushStrategy(strategyStyle);
+export function createBrushStrategy(strategyStyle: StrategyStyle, keys: Record<string, boolean>): BrushStrategy{
+    return new BrushStrategy(strategyStyle, keys);
 }

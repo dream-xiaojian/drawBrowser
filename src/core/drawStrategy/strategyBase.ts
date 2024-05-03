@@ -5,9 +5,15 @@ import { Point } from "../drawBoard";
 //策略的基类
 export abstract class StrategyBase <T extends SVGElement>{
     el : T | null = null; //每次创建的svg元素
+    pointEvent: PointerEvent | null = null; //鼠标的坐标, 可以在键盘事件获取到鼠标坐标-实现recall()
+    
 
-    constructor(public strategyStyle:StrategyStyle) {
+    constructor(public strategyStyle:StrategyStyle, public keys: Record<string, boolean>) {
 
+    }
+
+    isKeyPass(key: string): boolean {
+        return this.keys[key] || false;
     }
 
     //设置svg元素的样式属性，给el
@@ -49,22 +55,27 @@ export abstract class StrategyBase <T extends SVGElement>{
         return undefined;
     };
 
+
+    initMouseCoordinates(event: PointerEvent, svg: SVGSVGElement): Point {
+        this.pointEvent = event;
+        return getSvgCoordinates(event, svg);
+    }
     /**
      * 下面的方法是对上面的三个函数的封装，将三个函数的公共方法提取出来
      * 比如说：鼠标相对坐标的获取
      */
     _eventStart(event: PointerEvent, svg: SVGSVGElement) {
-        let point = getSvgCoordinates(event, svg);
+        let point = this.initMouseCoordinates(event, svg);
         return this.onStart(point);
     }
 
     _eventProcess(event: PointerEvent, svg: SVGSVGElement) {
-        let point = getSvgCoordinates(event, svg);
+        let point = this.initMouseCoordinates(event, svg);
         return this.onProcess(point);
     }
 
     _eventEnd(event: PointerEvent, svg: SVGSVGElement) {
-        let point = getSvgCoordinates(event, svg);
+        let point = this.initMouseCoordinates(event, svg);
         return this.onEnd(point);
     }
 

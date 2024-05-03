@@ -4,22 +4,29 @@ import { Options } from './type'
 export class Board {
     private el: SVGSVGElement | null = null; //画布根元素
     private drawStrategies: Record<StrategyTag, StrategyBase<SVGElement>>; //绘制策略
-    
+    keys: Record<string, boolean> = {}; //键盘按键状态
 
     constructor(public options: Options = {}) {
-        this.drawStrategies = CreateDrawStrategy(this.options.strategyStyle || {stroke: '#000'})
+        this.drawStrategies = CreateDrawStrategy(
+            this.options.strategyStyle || {stroke: '#000'},
+            this.keys
+        )
         
         if (options.el) {
             this.mounted(options.el)
         }
     }
 
-    get strategy() { //自动根据策略标签获取对应的策略
-        return this.drawStrategies[this.options.strategyTag || 'brush'];
+    get strategyTag() { //自动根据策略标签获取对应的策略
+        return this.options.strategyTag || 'rect';
+    }
+
+    set strategyTag(strategyTag: StrategyTag) {
+        this.options.strategyTag = strategyTag;
     }
 
 
-    mounted(el: SVGSVGElement | string) {
+    mounted(el: SVGSVGElement | string, listenWindow: Window = window) {
         //因为是初始化，所以一开始el就是null
         if (this.el) {
             return new Error('The board has been mounted')
@@ -35,37 +42,60 @@ export class Board {
         }
         this.el = element as SVGSVGElement;
 
-        this.setListenMethod()
+        this.setListenMethod(listenWindow)
     }
 
-    setListenMethod() {
+    setListenMethod(listenWindow: Window = window) {
         const target = this.el as SVGSVGElement;
         
         //这里会存在一个问题，就是this指向的问题，方法中的this指向的是调用这个方法的对象，而不是Board对象
         this.onStart = this.onStart.bind(this)
         this.onProcess = this.onProcess.bind(this)
         this.onEnd = this.onEnd.bind(this)
+        this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleKeyUp = this.handleKeyUp.bind(this)
 
         target.addEventListener("pointerdown", this.onStart)
         target.addEventListener("pointermove", this.onProcess)
         target.addEventListener("pointerup", this.onEnd)
+        listenWindow.addEventListener("keydown", this.handleKeyDown)
+        listenWindow.addEventListener("keyup", this.handleKeyUp)
+        //监听键盘事件-在winow上监听， window 对象可以接收到所有的键盘事件，无论焦点在哪里
+        //减少失焦造成的键盘监听失败的可能
 
         //还有一个问题，事件监听器是不会被销毁的，所以这里需要一个销毁的方法
     }
 
+    recallProcess () {
+        let pointEvent = this.drawStrategies[this.strategyTag].pointEvent;
+        if (pointEvent) {
+            this.drawStrategies[this.strategyTag]._eventProcess(pointEvent, this.el!)
+        }
+    }
+
+    handleKeyDown(event: KeyboardEvent) {
+         this.keys[event.key] = true;
+         this.recallProcess();
+    }
+
+    handleKeyUp(event: KeyboardEvent) {
+        this.keys[event.key] = false;
+        this.recallProcess();
+   }
+
     onStart(event: PointerEvent) {
-        const currentDom = this.strategy._eventStart(event, this.el!) //抽离
+        const currentDom = this.drawStrategies[this.strategyTag]._eventStart(event, this.el!) //抽离
         if (currentDom) {
             this.el!.appendChild(currentDom)
         }
     }
 
     onProcess(event: PointerEvent) {
-        this.strategy._eventProcess(event, this.el!)
+        this.drawStrategies[this.strategyTag]._eventProcess(event, this.el!)
     }
 
     onEnd(event: PointerEvent) {
-        this.strategy._eventEnd(event, this.el!)
+        this.drawStrategies[this.strategyTag]._eventEnd(event, this.el!)
     }
 }
 
