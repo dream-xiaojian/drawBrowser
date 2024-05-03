@@ -15,7 +15,7 @@ export class Board {
     }
 
     get strategy() { //自动根据策略标签获取对应的策略
-        return this.drawStrategies[this.options.strategyTag || 'ellipse'];
+        return this.drawStrategies[this.options.strategyTag || 'brush'];
     }
 
 

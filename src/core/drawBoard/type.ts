@@ -1,5 +1,7 @@
 
 import { StrategyTag, StrategyStyle} from "../drawStrategy";
+
+
 /**
  * @description 绘制画板的初始化配置项
  * （1）部分配置项是必填的，比如el、strokeColor
@@ -37,6 +39,10 @@ export interface Options {
 export interface Point {
     x : number;
     y : number;
+    /**
+     * @default 0.5
+     */
+    pressure? : number; 
 }
 
 

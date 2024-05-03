@@ -7,5 +7,6 @@ const board = createDrawBoard({
     strategyStyle: {
         stroke: "#000",
         fill: "transparent",
+        strokeWidth: 4,
     }
 })

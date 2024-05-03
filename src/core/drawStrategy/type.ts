@@ -1,3 +1,4 @@
+import {StrokeOptions} from "perfect-freehand"
 
 /**
  * @description 绘制策略的样式，比如线条的颜色、宽度、样式等
@@ -21,4 +22,9 @@ export interface StrategyStyle {
      * @default butt
      */
     fill?: string; 
+
+    /**
+     * perfect-freehand Options
+    */
+    strokeOptions?: StrokeOptions 
 }
