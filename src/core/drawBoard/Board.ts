@@ -4,7 +4,7 @@ import { Options } from './type'
 export class Board {
     private el: SVGSVGElement | null = null; //画布根元素
     private drawStrategies: Record<StrategyTag, StrategyBase<SVGElement>>; //绘制策略
-    keys: Record<string, boolean> = {}; //键盘按键状态
+    private keys: Record<string, boolean> = {}; //键盘按键状态
 
     constructor(public options: Options = {}) {
         this.drawStrategies = CreateDrawStrategy(
@@ -25,7 +25,9 @@ export class Board {
         this.options.strategyTag = strategyTag;
     }
 
+    
 
+    
     mounted(el: SVGSVGElement | string, listenWindow: Window = window) {
         //因为是初始化，所以一开始el就是null
         if (this.el) {
