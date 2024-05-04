@@ -17,22 +17,31 @@ export class EllipseStrategy extends StrategyBase<SVGEllipseElement> {
         
     }
 
-    override onEnd(point: Point) {
-        // if (this.el == null || this.startPoint == null) return false;
-        // this.calculate(point)
+    override onEnd(_point: Point) {
         this.el = null;
         return true;
     }
 
     calculate(point: Point): void{ 
-        let cx = (this.startPoint!.x + point.x) / 2;
-        let cy = (this.startPoint!.y + point.y) / 2;
-        let rx = Math.abs(point.x - this.startPoint!.x) / 2;
-        let ry = Math.abs(point.y - this.startPoint!.y) / 2;
+        let startX = this.startPoint!.x;
+        let startY = this.startPoint!.y;
+        let endX = point.x;
+        let endY = point.y;
+
+        let rx = Math.abs(endX - startX) / 2;
+        let ry = Math.abs(endY - startY) / 2;
         
         if (this.isKeyPass('Shift')) {
             let min = Math.min(rx, ry);
             rx = min; ry = min;
+        }
+    
+        let cx = startX + rx; let cy = startY + ry;
+        if (endX < startX) { 
+            cx = startX - rx;
+        }
+        if (endY < startY) {
+            cy = startY - ry;
         }
 
         this.el!.setAttribute('cx', cx.toString());

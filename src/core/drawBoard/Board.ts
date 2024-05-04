@@ -18,7 +18,7 @@ export class Board {
     }
 
     get strategyTag() { //自动根据策略标签获取对应的策略
-        return this.options.strategyTag || 'rect';
+        return this.options.strategyTag || 'ellipse';
     }
 
     set strategyTag(strategyTag: StrategyTag) {
