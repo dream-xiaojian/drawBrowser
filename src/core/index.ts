@@ -1,1 +1,2 @@
-export {createDrawBoard} from "./drawBoard"
+export * from "./drawBoard"
+export * from "./drawStrategy"

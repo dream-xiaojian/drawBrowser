@@ -15,7 +15,7 @@ const board = createDrawBoard({
 let strategyDoms: NodeListOf<Element> = document.querySelectorAll('[data-strategy]');
 
 strategyDoms.forEach(element => {
-    element.addEventListener('click', function(event) {
+    element.addEventListener('click', function(_event) {
         reset(strategyDoms);
         element.classList.add('active');
         board.strategyTag = element.getAttribute('data-strategy') as any;
@@ -25,7 +25,7 @@ strategyDoms.forEach(element => {
 let styleColorDoms: NodeListOf<Element> = document.querySelectorAll('[data-color]');
 
 styleColorDoms.forEach(element => {
-    element.addEventListener('click', function(event) {
+    element.addEventListener('click', function(_event) {
         reset(styleColorDoms);
         element.classList.add('active');
         board.options.strategyStyle!.stroke = element.getAttribute('data-color') as any;
@@ -33,7 +33,7 @@ styleColorDoms.forEach(element => {
 });
 
 let sizeInput: HTMLInputElement = document.getElementById('size') as HTMLInputElement;
-sizeInput!.addEventListener('change', function(event) {
+sizeInput!.addEventListener('change', function(_event) {
     board.options.strategyStyle!.strokeWidth = Number(sizeInput!.value);
 });
 

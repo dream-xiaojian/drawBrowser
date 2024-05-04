@@ -19,7 +19,7 @@ export class BrushStrategy extends StrategyBase<SVGPathElement> {
         return true;
     }
 
-    override onEnd(point: Point) {
+    override onEnd(_point: Point) {
         if (this.el == null) return false;
         this.el = null;
         return true;

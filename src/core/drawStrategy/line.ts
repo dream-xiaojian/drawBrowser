@@ -36,7 +36,7 @@ export class LineStrategy extends StrategyBase<SVGLineElement> {
         
     }
 
-    override onEnd(point: Point) {
+    override onEnd(_point: Point) {
         this.el = null;
         return true;
     }
