@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DrawBrowser</title>
+    <style>
+      :root {
+        --elevation-200-canvas: 0px 0px .5px rgba(0, 0, 0, .18), 0px 3px 8px rgba(0, 0, 0, .1), 0px 1px 3px rgba(0, 0, 0, .1);
+      }
+      .control-panel{
+        /* height: 80px; */
+        padding: 10px 10px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        pointer-events: auto;
+        background: rgb(255, 255, 255);
+        box-sizing: border-box;
+        border-radius: 13px;
+        transition: all .2s;
+        border:1px solid rgba(229, 231, 235, 1);
+        box-shadow: 0 0 0 .5px #00000033, var(--elevation-200-canvas);
+        align-items: center
+      }
+      button {
+        height: 2rem;
+        outline: 2px solid transparent !important;
+        outline-offset: 2px !important;
+        width: 2rem;
+        text-transform: none;
+        background-color: transparent;
+        background-image: none;
+        cursor: pointer;
+        border: none;
+      }
+      .active{
+        background-color: #f0f0f0;
+      }
+
+    </style>
+    
+    <script type="module" crossorigin src="/assets/index-CIizI8Zw.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DNtKMOlZ.css">
+  </head>
+  <body>
+    <div id="app" style="width: 100vw; height: 100vh; position: relative;">
+        <!-- viewBox="0 0 500 500" -->
+        <svg id="my_svg" width="100%" height="100%" >
+          <!-- 点阵背景 -->
+          <defs>
+            <pattern id="dotPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="2" fill="#d3d3d3" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dotPattern)" />
+        </svg>
+
+        <!-- 操作框 -->
+        <div style="position: fixed; z-index: 9999; margin: auto; bottom: 5%;
+          left: 50%; transform:translate(-50%,-5%);" class="control-panel">
+          <div>
+            <button class="active" id="m-stylus" aria-label="brush" data-strategy="brush" title="brush">✍️</button>
+            <button id="m-line" aria-label="line" title="Line" data-strategy="line">⁄</button>
+            <button id="m-rect" aria-label="rect" title="Rect" data-strategy="rect">⃞</button>
+            <button id="m-ellipse" aria-label="ellipse" title="Ellipse" data-strategy="ellipse">⃝</button>
+            <!-- <button id="m-eraser" aria-label="Eraser" title="Eraser" data-strategy="#000000">🧹</button> -->
+          </div>
+          <div>
+            <button data-color="#000000" class="active">​⚫️​</button>
+            <button data-color="#ed153d" aria-label="Red" title="Red">​🔴​</button>
+            <button data-color="#ed9a26" aria-label="Orange" title="Orange">​🟠​​</button>
+            <button data-color="#ede215" aria-label="Yellow" title="Yellow">​​🟡​​</button>
+            <button data-color="#30bd20" aria-label="Green" title="Green">​🟢​​</button>
+            <button data-color="#2656bf" aria-label="Blue" title="Blue">​​🔵​​</button>
+            <button data-color="#c24aed" aria-label="Purple" title="Purple">​🟣​​</button>
+            <button data-color="#bf6b26" aria-label="Brown" title="Brown">​​🟤​</button>
+          </div>
+          <div style="display: flex; align-items: center;">
+            <input id="size" type="range" min="1" max="10" value="4" step="0.5" name="Size" title="Size"/>
+          </div>
+          <div style="display: flex; align-items: center;">
+            <button id="l-solid" class="active" aria-label="Solid" title="Solid">—</button>
+            <button id="l-dashed" aria-label="Dashed" title="Dashed">┅</button>
+            <button id="l-dotted" aria-label="Dotted" title="Dotted">⋯</button>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>
