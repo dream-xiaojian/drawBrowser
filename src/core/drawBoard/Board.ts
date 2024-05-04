@@ -18,7 +18,7 @@ export class Board {
     }
 
     get strategyTag() { //自动根据策略标签获取对应的策略
-        return this.options.strategyTag || 'ellipse';
+        return this.options.strategyTag || 'brush';
     }
 
     set strategyTag(strategyTag: StrategyTag) {
@@ -60,8 +60,6 @@ export class Board {
         target.addEventListener("pointerup", this.onEnd)
         listenWindow.addEventListener("keydown", this.handleKeyDown)
         listenWindow.addEventListener("keyup", this.handleKeyUp)
-        //监听键盘事件-在winow上监听， window 对象可以接收到所有的键盘事件，无论焦点在哪里
-        //减少失焦造成的键盘监听失败的可能
 
         //还有一个问题，事件监听器是不会被销毁的，所以这里需要一个销毁的方法
     }

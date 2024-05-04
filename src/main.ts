@@ -10,3 +10,15 @@ const board = createDrawBoard({
         strokeWidth: 4,
     }
 })
+
+
+let strategyDom = document.querySelectorAll('[data-strategy]');
+
+strategyDom.forEach(element => {
+    element.addEventListener('click', function(event) {
+        board.strategyTag = element.getAttribute('data-strategy') as any;
+    });
+});
+
+
+
