@@ -57,12 +57,14 @@ export class Board {
         this.handleKeyDown = this.handleKeyDown.bind(this)
         this.handleKeyUp = this.handleKeyUp.bind(this)
 
-        target.addEventListener("pointerdown", this.onStart)
-        target.addEventListener("pointermove", this.onProcess)
-        target.addEventListener("pointerup", this.onEnd)
+        target.addEventListener("pointerdown", this.onStart, {passive: false})
+        listenWindow.addEventListener("pointermove", this.onProcess, {passive: false})
+        listenWindow.addEventListener("pointerup", this.onEnd, {passive: false})
+        listenWindow.addEventListener("pointercancel", this.onEnd, {passive:false})
+       
+        
         listenWindow.addEventListener("keydown", this.handleKeyDown)
         listenWindow.addEventListener("keyup", this.handleKeyUp)
-
         //还有一个问题，事件监听器是不会被销毁的，所以这里需要一个销毁的方法
     }
 
