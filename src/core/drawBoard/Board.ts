@@ -54,19 +54,18 @@ export class Board {
         this.onStart = this.onStart.bind(this)
         this.onProcess = this.onProcess.bind(this)
         this.onEnd = this.onEnd.bind(this)
-        this.pointercancel = this.pointercancel.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
         this.handleKeyUp = this.handleKeyUp.bind(this)
 
         
         
         target.addEventListener("pointerdown", this.onStart, {passive: false})
-        document.addEventListener("pointermove", this.onProcess, {passive: false})
-        document.addEventListener("pointerup", this.onEnd, {passive: false})
-        document.addEventListener("pointercancel", this.pointercancel, {passive:false})
+        listenWindow.addEventListener("pointermove", this.onProcess, {passive: false})
+        listenWindow.addEventListener("pointerup", this.onEnd, {passive: false})
+        listenWindow.addEventListener("pointercancel", this.onEnd, {passive:false})
        
-        // document.addEventListener("keydown", this.handleKeyDown)
-        // document.addEventListener("keyup", this.handleKeyUp)
+        listenWindow.addEventListener("keydown", this.handleKeyDown)
+        listenWindow.addEventListener("keyup", this.handleKeyUp)
         //还有一个问题，事件监听器是不会被销毁的，所以这里需要一个销毁的方法
     }
 
@@ -88,39 +87,26 @@ export class Board {
    }
 
     onStart(event: PointerEvent) {
-        console.log('pointerdown', event);
         event.preventDefault()
         event.stopPropagation()
         const currentDom = this.drawStrategies[this.strategyTag]._eventStart(event, this.el!) //抽离
         if (currentDom) {
             this.el!.appendChild(currentDom)
         }
-        // window.addEventListener("pointermove", this.onProcess, {passive: false});
+       
     }
 
     onProcess(event: PointerEvent) {
         event.preventDefault()
-        console.log('pointermove', event);
         if (this.drawStrategies[this.strategyTag]._eventProcess(event, this.el!)) {
             event.preventDefault()
             event.stopPropagation()
         }
-
-        // window.removeEventListener("pointermove", this.onProcess);
-
     }
 
     onEnd(event: PointerEvent) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('pointerup', event);
-        this.drawStrategies[this.strategyTag]._eventEnd(event, this.el!)
-    }
-
-    pointercancel(event: PointerEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log('pointercancel', event);
         this.drawStrategies[this.strategyTag]._eventEnd(event, this.el!)
     }
 }
