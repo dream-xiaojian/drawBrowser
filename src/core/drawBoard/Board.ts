@@ -18,16 +18,13 @@ export class Board {
     }
 
     get strategyTag() { //自动根据策略标签获取对应的策略
-        return this.options.strategyTag || 'brush';
+        return this.options.strategyTag || 'text';
     }
 
     set strategyTag(strategyTag: StrategyTag) {
         this.options.strategyTag = strategyTag;
     }
 
-    
-
-    
     mounted(el: SVGSVGElement | string, listenWindow: Window = window) {
         //因为是初始化，所以一开始el就是null
         if (this.el) {
@@ -87,13 +84,11 @@ export class Board {
    }
 
     onStart(event: PointerEvent) {
-        event.preventDefault()
-        event.stopPropagation()
+        // return;
         const currentDom = this.drawStrategies[this.strategyTag]._eventStart(event, this.el!) //抽离
         if (currentDom) {
             this.el!.appendChild(currentDom)
         }
-       
     }
 
     onProcess(event: PointerEvent) {

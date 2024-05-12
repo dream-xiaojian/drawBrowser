@@ -3,5 +3,38 @@
   margin: 0%;
   overflow-x: hidden;
   overflow-y: hidden;
-  touch-action: none
+  touch-action: none;
+  box-sizing: border-box;
+}
+
+
+.drawBrowser-textarea {
+  background: transparent !important;
+  border: 2px solid transparent;
+  resize: none;
+  outline: none; 
+  /* transition: all 0.3s ease;  */
+  overflow: hidden;
+  padding: 5px 5px;
+  -webkit-text-size-adjust: none;
+  padding-bottom: 10px;
+
+}
+
+.drawBrowser-textarea:focus {
+  background: transparent !important;
+  outline: none;
+  border: 2px dotted #555;
+  resize: none;
+  outline: none;  
+  overflow: hidden;
+  padding: 5px 5px;
+  padding-bottom: 10px;
+  /* transition: all 0.1s ease; */
+}
+
+.drawBrowser-textarea-border{
+  position: absolute;
+  border: 2px dotted #555;
+  pointer-events: none;
 }
