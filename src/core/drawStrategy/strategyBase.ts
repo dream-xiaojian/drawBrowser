@@ -3,7 +3,7 @@ import {camelToSnake, getSvgCoordinates, average} from "../../utils"
 import { Point } from "../drawBoard";
 
 //策略的基类
-export abstract class StrategyBase <T extends SVGElement>{
+export abstract class StrategyBase <T extends SVGElement | null = null>{
     el : T | null = null; //每次创建的svg元素
     pointEvent: PointerEvent | null = null; //鼠标的坐标, 可以在键盘事件获取到鼠标坐标-实现recall()
     
@@ -43,16 +43,16 @@ export abstract class StrategyBase <T extends SVGElement>{
      * （2）过程 --- 鼠标移动
      * （3）结束 --- 鼠标松开
      */
-    onStart(_point: Point): T | undefined {
-        return undefined;
+    onStart(_point: Point): T | null {
+        return null;
     }
 
-    onProcess(_point: Point): boolean | undefined{
-        return undefined
+    onProcess(_point: Point): boolean | null {
+        return null;
     }
 
-    onEnd(_point: Point): boolean | undefined {
-        return undefined;
+    onEnd(_point: Point): boolean | null {
+        return null;
     };
 
 

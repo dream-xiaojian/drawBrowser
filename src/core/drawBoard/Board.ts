@@ -2,23 +2,19 @@ import { StrategyBase, StrategyTag, CreateDrawStrategy} from '../drawStrategy'
 import { Options } from './type'
 
 export class Board {
-    private el: SVGSVGElement | null = null; //画布根元素
-    private drawStrategies: Record<StrategyTag, StrategyBase<SVGElement>>; //绘制策略
-    private keys: Record<string, boolean> = {}; //键盘按键状态
+    el: SVGSVGElement | null = null; //画布根元素
+    private drawStrategies: Record<StrategyTag, StrategyBase<SVGElement | null>>; //绘制策略
+    keys: Record<string, boolean> = {}; //键盘按键状态
 
     constructor(public options: Options = {}) {
-        this.drawStrategies = CreateDrawStrategy(
-            this.options.strategyStyle || {stroke: '#000'},
-            this.keys
-        )
-        
         if (options.el) {
             this.mounted(options.el)
         }
+        this.drawStrategies = CreateDrawStrategy(this)
     }
 
     get strategyTag() { //自动根据策略标签获取对应的策略
-        return this.options.strategyTag || 'text';
+        return this.options.strategyTag || 'brush';
     }
 
     set strategyTag(strategyTag: StrategyTag) {
@@ -63,13 +59,15 @@ export class Board {
        
         listenWindow.addEventListener("keydown", this.handleKeyDown)
         listenWindow.addEventListener("keyup", this.handleKeyUp)
+
         //还有一个问题，事件监听器是不会被销毁的，所以这里需要一个销毁的方法
     }
 
     recallProcess () {
         let pointEvent = this.drawStrategies[this.strategyTag].pointEvent;
         if (pointEvent) {
-            this.drawStrategies[this.strategyTag]._eventProcess(pointEvent, this.el!)
+            if (this.strategyTag != 'hand')
+                this.drawStrategies[this.strategyTag]._eventProcess(pointEvent, this.el!)
         }
     }
 
