@@ -18,7 +18,7 @@ export class HandStrategy extends StrategyBase<SVGElement> {
 
     //电脑端：空格进行移动画布，向左下角滑动画布向右上角移动 ...
     //手机端：按住进行移动画布
-    override onStart(point: Point) {
+    override onStart(_point: Point) {
         return null;
     }
              
